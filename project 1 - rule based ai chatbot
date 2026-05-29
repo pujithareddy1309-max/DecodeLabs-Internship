@@ -1,0 +1,58 @@
+import re
+import sys
+
+def get_bot_response(user_input):
+    
+    user_input = user_input.lower()
+
+    rules = {
+        r"\b(hi|hello|hey|hola)\b": 
+            "Hello! Welcome to Internet Support. How can I help you today?",
+        
+        r"\b(internet|wifi|wi-fi|connection|down|slow)\b": 
+            "I'm sorry to hear you're having connectivity issues. Please try restarting your router by unplugging it for 30 seconds. If that doesn't work, reply with 'agent'.",
+        
+        r"\b(bill|billing|payment|charge|pay)\b": 
+            "You can view and pay your bill securely on our website at internet.com/billing or via our mobile app.",
+        
+        r"\b(plan|plans|upgrade|price|cost)\b": 
+            "We offer high-speed plans starting at $39/month! You can view all available packages at internet.com/plans.",
+        
+        r"\b(agent|human|representative|support)\b": 
+            "Connecting you to a live chat agent... Please hold.",
+        
+        r"\b(thank you|thanks|bye|exit|quit)\b": 
+            "Thank you for reaching out to NetConnect. Have a great day!"
+    }
+
+    
+    for pattern, response in rules.items():
+        if re.search(pattern, user_input):
+            return response
+
+    
+    return "I'm not sure I understood that. Could you please rephrase? You can ask about 'internet issues', 'billing', 'plans', or type 'agent' to speak to a human."
+
+def main():
+    print("--- internet Customer Support Chatbot ---")
+    print("Type 'exit' or 'bye' to end the conversation.\n")
+    
+    
+    print("Bot: " + get_bot_response("hello"))
+
+    while True:
+        try:
+            user_msg = input("You: ")
+            response = get_bot_response(user_msg)
+            print(f"Bot: {response}")
+            
+        
+            if "have a great day" in response.lower() or "connecting you to a live chat agent" in response.lower():
+                break
+                
+        except (KeyboardInterrupt, EOFError):
+            print("\nBot: Session ended. Goodbye!")
+            sys.exit()
+
+if __name__ == "__main__":
+    main()
