@@ -57,3 +57,21 @@ species_2 = iris.target_names[pred_2[0]]
 
 print(f"Flower 1 Dimensions: {mystery_flower_1[0]} -> Predicted Species: **{species_1.upper()}**")
 print(f"Flower 2 Dimensions: {mystery_flower_2[0]} -> Predicted Species: **{species_2.upper()}**")
+
+print("Please enter the flower dimensions to classify it:")
+
+try:
+  sepal_length = float(input("Enter Sepal Length (cm): "))
+  sepal_width  = float(input("Enter Sepal Width (cm): "))
+  petal_length = float(input("Enter Petal Length (cm): "))
+  petal_width  = float(input("Enter Petal Width (cm): "))
+  
+  user_flower = [[sepal_length, sepal_width, petal_length, petal_width]]
+  user_pred = best_model.predict(user_flower)
+  
+  predicted_species = iris.target_names[user_pred[0]]
+  
+  print(f"\nResult: The AI classifies this flower as {predicted_species.upper()}")
+
+except ValueError:
+   print("\n Error: Please enter valid numbers for the dimensions.")
