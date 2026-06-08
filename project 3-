@@ -1,0 +1,79 @@
+
+
+media_dataset = [
+    {
+        "title": "Interstellar",
+        "tags": {"sci-fi", "space", "adventure", "nolan"}
+    },
+    {
+        "title": "The Dark Knight",
+        "tags": {"action", "crime", "drama", "nolan"}
+    },
+    {
+        "title": "Inception",
+        "tags": {"sci-fi", "heist", "thriller", "nolan"}
+    },
+    {
+        "title": "Spirited Away",
+        "tags": {"anime", "fantasy", "adventure"}
+    },
+    {
+        "title": "The Conjuring",
+        "tags": {"horror", "thriller", "supernatural"}
+    },
+    {
+        "title": "Knives Out",
+        "tags": {"mystery", "comedy", "crime"}
+    }
+]
+
+
+def get_user_profile():
+    print("--- Welcome to the Digital Matchmaker ---")
+    print("Available tags: sci-fi, space, adventure, nolan, action, crime, drama, heist, thriller, anime, fantasy, horror, supernatural, mystery, comedy\n")
+    
+    
+    user_input = input("Enter your favorite genres/interests (separated by commas): ")
+    
+    
+    user_interests = {tag.strip().lower() for tag in user_input.split(",") if tag.strip()}
+    return user_interests
+
+
+def generate_recommendations(user_profile, dataset):
+    scored_items = []
+    
+    for item in dataset:
+        
+        overlapping_tags = user_profile.intersection(item["tags"])
+        similarity_score = len(overlapping_tags)
+        
+        
+        if similarity_score > 0:
+            scored_items.append({
+                "title": item["title"],
+                "score": similarity_score,
+                "matches": overlapping_tags
+            })
+            
+    
+    ranked_items = sorted(scored_items, key=lambda x: (-x["score"], x["title"]))
+    return ranked_items
+
+
+if __name__ == "__main__":
+    
+    user_profile = get_user_profile()
+    print(\n"Your Target Profile Tags:", user_profile)
+    
+    
+    recommendations = generate_recommendations(user_profile, media_dataset)
+    
+    
+    print("\n--- Your Top Recommendations ---")
+    if not recommendations:
+        print("No exact pattern alignments found. Try expanding your interest tags!")
+    else:
+        for index, item in enumerate(recommendations, start=1):
+            matched_tags = ", ".join(item["matches"])
+            print(f"{index}. {item['title']} | Match Score: {item['score']} (Matched: {matched_tags})")
